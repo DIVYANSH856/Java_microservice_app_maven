@@ -1,7 +1,6 @@
 FROM openjdk:11
 RUN apt-get update && apt-get install -y maven
-COPY ../ /usr/src/frontend2/
+COPY / /usr/src/frontend2/
 WORKDIR /usr/src/frontend2/
 RUN mvn clean install
-EXPOSE 8081
 CMD ["mvn", "jetty:run"]

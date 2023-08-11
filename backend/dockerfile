@@ -3,10 +3,9 @@ FROM openjdk:11
 # Install Maven
 RUN apt-get update && apt-get install -y maven
 # Copy the source code into the container
-COPY ../ /usr/src/backend/
+COPY / /usr/src/backend/
 # Set the working directory
 WORKDIR /usr/src/backend/
 RUN mvn clean install
-EXPOSE 8080
 # Specify the command to run your Spring Boot application
 CMD ["mvn","spring-boot:run"]
