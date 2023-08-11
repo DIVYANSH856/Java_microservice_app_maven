@@ -14,7 +14,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${spring-boot.version}</version>
         <configuration>
-          <executable>true</executable>
+          <includeSpringFactories>true</includeSpringFactories>
         </configuration>
       </plugin>
       <plugin>
@@ -39,10 +39,7 @@
     </plugins>
   </build>
   <properties>
-    <maven.compiler.target>1.8</maven.compiler.target>
     <java.version>11</java.version>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <start-class>com.example.backend.BackendApp</start-class>
     <spring-boot.version>2.5.4</spring-boot.version>
   </properties>
 </project>

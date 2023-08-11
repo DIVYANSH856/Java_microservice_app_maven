@@ -1,8 +1,12 @@
-FROM openjdk:11-jre-slim
-WORKDIR /app
-
-# Copy the compiled JAR from the target directory into the container
-COPY target/backend-1.0.0.jar  target/backend-1.0.0.jar
-
-# Command to run the application
-CMD ["java", "-jar", "app.jar"]
+# Use an image with the full JDK instead of just the JRE
+FROM openjdk:11
+# Install Maven
+RUN apt-get update && apt-get install -y maven
+# Copy the source code into the container
+COPY ../ /usr/src/backend/
+# Set the working directory
+WORKDIR /usr/src/backend/
+RUN mvn clean install
+EXPOSE 8080
+# Specify the command to run your Spring Boot application
+CMD ["mvn","spring-boot:run"]

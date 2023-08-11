@@ -1,8 +1,7 @@
-FROM openjdk:8-jre-alpine
-COPY target/frontend2-1.0-SNAPSHOT.war target/frontend2-1.0-SNAPSHOT.war   
-
-# Expose the default Tomcat port
-EXPOSE 8080
-
-# Start Tomcat
-CMD ["java", "-jar", "app.war"]
+FROM openjdk:11
+RUN apt-get update && apt-get install -y maven
+COPY ../ /usr/src/frontend2/
+WORKDIR /usr/src/frontend2/
+RUN mvn clean install
+EXPOSE 8081
+CMD ["mvn", "jetty:run"]

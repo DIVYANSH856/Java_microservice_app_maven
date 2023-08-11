@@ -2,12 +2,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.example</groupId>
-        <artifactId>my-microservices-app</artifactId>
-        <version>1.0.0</version>
-    </parent>
+    <groupId>com.example</groupId> <!-- Add this line with your actual group ID -->
     <artifactId>backend</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <properties>
         <java.version>11</java.version>
@@ -21,24 +18,24 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version>
+            <version>${spring-boot.version}</version> <!-- Add this line -->
         </dependency>
     </dependencies>
     <build>
         <plugins>
-            <!-- Spring Boot Maven plugin for packaging and running the application -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
                 <configuration>
-                    <executable>true</executable>
+                    <includeSpringFactories>true</includeSpringFactories>
                 </configuration>
+                <version>${spring-boot.version}</version>
             </plugin>
+
 
             <!-- Maven Shade Plugin -->
             <plugin>
-                 <groupId>org.apache.maven.plugins</groupId>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.4</version> <!-- Use the latest version -->
                 <executions>
