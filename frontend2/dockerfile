@@ -1,8 +1,8 @@
-FROM tomcat:9.0-jre11
+FROM openjdk:8-jre-alpine
 COPY target/frontend2-1.0-SNAPSHOT.war target/frontend2-1.0-SNAPSHOT.war   
 
 # Expose the default Tomcat port
 EXPOSE 8080
 
 # Start Tomcat
-CMD ["catalina.sh", "run"]
+CMD ["java", "-jar", "app.war"]
