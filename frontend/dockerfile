@@ -1,0 +1,8 @@
+FROM tomcat:9.0-jre11
+COPY target/frontend.war /target/frontend.war
+
+# Expose the default Tomcat port
+EXPOSE 8080
+
+# Start Tomcat
+CMD ["catalina.sh", "run"]
