@@ -1,16 +1,38 @@
 version: '3'
 services:
+  network-creator:
+    image: busybox
+    command: ["sh", "-c", "docker network create mynetwork"]
+    networks:
+      - default
+
   backend:
-    image: module-name:1.0.0
+    image: divyanshkohli856/module-name:1.0.0
     ports:
-      - "8080:8080"
+      - "8084:8084"  # Map host port 8084 to container port 8084
+    networks:
+      - mynetwork
+    depends_on:
+      - network-creator
+
   frontend:
-    build:
-      context: ./frontend
+    image: divyanshkohli856/frontend:1.0.0
     ports:
-      - "81:8080"
+      - "81:8081"   # Map host port 81 to container port 8081
+    networks:
+      - mynetwork
+    depends_on:
+      - network-creator
+  
   frontend2:
-    build:
-      context: ./frontend2
+    image: divyanshkohli856/frontend1:1.0.0
     ports:
-      - "82:8080"
+      - "82:8082"   # Map host port 82 to container port 8082
+    networks:
+      - mynetwork
+    depends_on:
+      - network-creator
+      
+networks:
+  mynetwork:
+    external: true
