@@ -18,7 +18,7 @@ services:
   frontend:
     image: divyanshkohli856/frontend:1.0.0
     ports:
-      - "81:8081"   # Map host port 81 to container port 8081
+      - "8081:8081"   # Map host port 81 to container port 8081
     networks:
       - mynetwork
     depends_on:
@@ -27,7 +27,7 @@ services:
   frontend2:
     image: divyanshkohli856/frontend1:1.0.0
     ports:
-      - "82:8082"   # Map host port 82 to container port 8082
+      - "8082:8082"   # Map host port 82 to container port 8082
     networks:
       - mynetwork
     depends_on:
