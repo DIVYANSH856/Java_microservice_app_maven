@@ -1,11 +1,10 @@
 pipeline {
     agent any
     stages{
-        stage('RUN'){
+        stage('run'){
           steps{
-            sh 'docker compose up'
+            sh './start_app.sh'
           }
         }
     }
-
 }
