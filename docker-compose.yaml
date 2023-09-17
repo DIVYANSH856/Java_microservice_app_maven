@@ -7,6 +7,7 @@ services:
       - default
 
   backend:
+    container_name: backend
     image: divyanshkohli856/module-name:1.0.0
     ports:
       - "8084:8084"  # Map host port 8084 to container port 8084
@@ -16,6 +17,7 @@ services:
       - network-creator
 
   frontend:
+    container_name: frontend
     image: divyanshkohli856/frontend:1.0.0
     ports:
       - "8081:8081"   # Map host port 81 to container port 8081
@@ -25,6 +27,7 @@ services:
       - network-creator
   
   frontend2:
+    container_name: frontend2
     image: divyanshkohli856/frontend1:1.0.0
     ports:
       - "8082:8082"   # Map host port 82 to container port 8082

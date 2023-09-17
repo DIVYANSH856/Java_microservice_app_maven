@@ -1,6 +1,8 @@
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,14 +11,28 @@ import javax.servlet.http.HttpServletResponse;
 public class FrontendServlet2 extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private boolean connectToBackend(String backendIp, String backendPort) {
+        String backendUrl = "http://" + backendIp + ":" + backendPort + "/"; // Replace with actual endpoint
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        try {
+            ResponseEntity<String> response = restTemplate.getForEntity(backendUrl, String.class);
+
+            return response.getStatusCode() == HttpStatus.OK;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        // Frontend HTML form to enter backend IP and port
         out.println("<html><body>");
-        out.println("<h2>Frontend Microservice</h2>");
+        out.println("<h2>Frontend2</h2>");
         out.println("<form method='post'>");
         out.println("Backend IP: <input type='text' name='backendIp'><br>");
         out.println("Backend Port: <input type='text' name='backendPort'><br>");
@@ -26,24 +42,25 @@ public class FrontendServlet2 extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Get the entered backend IP and port
+    throws ServletException, IOException {
         String backendIp = request.getParameter("backendIp");
         String backendPort = request.getParameter("backendPort");
-
-        // TODO: Implement logic to connect to the backend microservice using backendIp and backendPort
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        // Display the connection status
         out.println("<html><body>");
-        out.println("<h2>Frontend Microservice</h2>");
+        out.println("<h2>Frontend2</h2>");
         out.println("Connecting to Backend Microservice at " + backendIp + ":" + backendPort + "<br>");
-        // TODO: Implement logic to connect to the backend microservice and display success or failure
-        // Example: if connection is successful, display "Success!" otherwise display "Connection Failed!"
-        out.println("Connection Status: Success!");
+
+        boolean connectionSuccessful = connectToBackend(backendIp, backendPort);
+
+        if (connectionSuccessful) {
+            out.println("Connection Status: Success!");
+        } else {
+            out.println("Connection Status: Connection Failed!");
+        }
+
         out.println("</body></html>");
     }
 }
-

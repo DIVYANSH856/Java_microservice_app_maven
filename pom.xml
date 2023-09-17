@@ -11,9 +11,9 @@
 
     <modules>
         <module>backend</module>
-	<module>frontend</module>
-	<module>frontend2</module>
-</modules>
+	    <module>frontend</module>
+	    <module>frontend2</module>
+    </modules>
 
     <!-- Common properties, dependencies, and configurations shared by both modules -->
     <properties>
