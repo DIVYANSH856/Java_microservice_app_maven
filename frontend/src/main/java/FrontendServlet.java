@@ -1,57 +1,71 @@
-import org.springframework.web.client.RestTemplate;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
+@WebServlet("/frontend")
 public class FrontendServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    private boolean connectToBackend(String backendIp, String backendPort) {
-        String backendUrl = "http://" + backendIp + ":" + backendPort + "/"; // Replace with actual endpoint
-        RestTemplate restTemplate = new RestTemplate();
-        try {
-            ResponseEntity<String> response = restTemplate.postForEntity(backendUrl, String.class);
-            return response.getStatusCode() == HttpStatus.OK;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
-        out.println("<h2>Frontend</h2>");
-        out.println("<form method='post'>");
-        out.println("Backend IP: <input type='text' name='backendIp'><br>");
-        out.println("Backend Port: <input type='text' name='backendPort'><br>");
-        out.println("<input type='submit' value='Connect'>");
+        out.println("<h2>Frontend Microservice</h2>");
+        out.println("<form action=\"\" method=\"post\">");
+        out.println("Backend IP: <input type=\"text\" name=\"backendIp\"><br>");
+        out.println("Backend Port: <input type=\"text\" name=\"backendPort\"><br>");
+        out.println("<input type=\"submit\" value=\"Submit\">");
         out.println("</form>");
         out.println("</body></html>");
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String backendIp = request.getParameter("backendIp");
         String backendPort = request.getParameter("backendPort");
+        String backendUrl = "http://" + backendIp + ":" + backendPort + "/hello";
+        
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
-        out.println("<h2>Frontend</h2>");
-        out.println("Connecting to Backend Microservice at " + backendIp + ":" + backendPort + "<br>");
-        boolean connectionSuccessful = connectToBackend(backendIp, backendPort);
-        if (connectionSuccessful) {
-            out.println("Connection Status: Success!");
+        out.println("<h2>Frontend Microservice</h2>");
+        out.println("<p>Calling Backend Microservice:</p>");
+
+        String backendResponse = callBackendService(backendIp, backendPort);
+
+        if (backendResponse != null) {
+            out.println("<p>Response from Backend: " + backendResponse + "</p>");
         } else {
-            out.println("Connection Status: Connection Failed!");
+            out.println("<p>Error connecting to Backend</p>");
         }
+        
         out.println("</body></html>");
+    }
+
+    private String callBackendService(String backendIp, String backendPort) {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        String backendUrl = "http://" + backendIp + ":" + backendPort + "/hello";
+        try {
+            HttpGet httpGet = new HttpGet(backendUrl);
+            CloseableHttpResponse response = httpClient.execute(httpGet);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            StringBuilder content = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line);
+            }
+            response.close();
+            httpClient.close();
+            return content.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error connecting to Backend";
+        }
     }
 }

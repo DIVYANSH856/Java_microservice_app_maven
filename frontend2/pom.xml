@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.example</groupId>
     <artifactId>frontend2</artifactId>
-    <version>1.0-SNAPSHOT</version> <!-- Make sure you have a version here -->
+    <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-   
+
     <properties>
         <java.version>1.8</java.version>
         <jetty.version>9.4.43.v20210629</jetty.version>
@@ -38,23 +38,27 @@
             <artifactId>spring-web</artifactId>
             <version>${spring.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
+       </dependency>
     </dependencies>
 
-
     <build>
+        <finalName>frontend2</finalName>
         <plugins>
-            <!-- Jetty plugin to run the frontend2 module on port 8082 -->
+            <!-- Jetty Maven plugin for running the frontend application -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.4.43.v20210629</version>
+                <version>${jetty.version}</version>
                 <configuration>
                     <httpConnector>
-                        <port>8082</port>
+                        <port>8082</port> 
                     </httpConnector>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 </project>
-
